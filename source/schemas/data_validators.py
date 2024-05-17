@@ -1,6 +1,6 @@
 import re
 
-class Regex:
+class Validators:
     """
     A class to handle regular expressions.
     """
@@ -21,6 +21,11 @@ class Regex:
     class file:
         @staticmethod
         def basic(string: str) -> bool:
-            return re.search(r"[./\\]", string) and re.search(r"[./\\]", string)
+            return re.search(r"[./\\]", string)
+
+        def txt(string: str) -> bool:
+            return string.endswith(".txt") is not True
+
+
 
         
