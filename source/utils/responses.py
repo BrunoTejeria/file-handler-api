@@ -62,7 +62,7 @@ class Responses:
         return FileResponse(content=file, status_code=200)
 
     @staticmethod
-    def error(err: bool | None = None, status: int = 200, message: str | None = None) -> JSONResponse:
+    def error(err: bool | None = True, status: int = 200, message: str | None = None) -> JSONResponse:
         """
         Returns a JSON response indicating an error.
 
