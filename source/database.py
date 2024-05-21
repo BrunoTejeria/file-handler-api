@@ -3,6 +3,7 @@ from sqlalchemy.orm import sessionmaker
 
 from .models.base import Base
 from .models.files import Files
+from .models.requests import Requests
 from .utils.env import __env__
 
 
