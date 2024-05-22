@@ -2,7 +2,7 @@ from fastapi import APIRouter, Request, Response
 from fastapi import File as FileType, UploadFile
 
 from ..utils.responses import Responses
-from ..database import Session
+from ..libs.database import Session
 from ..models.files import Files as FilesModel
 from ..schemas.data_validators import Validators
 
