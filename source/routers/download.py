@@ -2,24 +2,36 @@ from fastapi import APIRouter, Request, Response
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
-from ..utils.responses import Responses
-from ..schemas.data_validators import Validators
-
+from ..services.download import Download as DownloadService
 
 router = APIRouter()
 
 @router.get("/download")
-def file(request: Request, response: Response, file: str):
-    if Validators.file.basic(file):
-        return JSONResponse(status_code=400, content=jsonable_encoder({"error": "Nombre no valido"}))
-    with open(f"./uploads/{file}.txt", "r") as f:
-        return Responses.json(status=200, data=f.read(), message="Archivo leído exitosamente")
+def download(request: Request, response: Response, file: str):
+    """
+    Endpoint to download a file in a standard format.
+    
+    Parameters:
+    - request: Request object.
+    - response: Response object.
+    - file: str, the name or path of the file to be downloaded.
+    
+    Returns:
+    - A response from the DownloadService with the requested file.
+    """
+    return DownloadService.download(file)
 
 @router.get("/download-bin")
-def file(request: Request, response: Response, file: str):
-    print(Validators.file.basic(file))
-    if Validators.file.basic(file):
-        return Responses.error(err=True, status=400, message="Nombre no valido")
-    with open(f"./uploads/{file}.txt", "rb") as f:
-        return Responses.json(status=200, data=str(f.read()), message="Archivo leído exitosamente")
-
+def download_bin(request: Request, response: Response, file: str):
+    """
+    Endpoint to download a file in binary format.
+    
+    Parameters:
+    - request: Request object.
+    - response: Response object.
+    - file: str, the name or path of the file to be downloaded in binary format.
+    
+    Returns:
+    - A binary response from the DownloadService with the requested file.
+    """
+    return DownloadService.download_bin(file)
