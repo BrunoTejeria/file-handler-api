@@ -1,11 +1,19 @@
-version: '3.8'
-
 services:
-  web:
+  server:
     build: .
     ports:
-      - "8000:8000"
+      - "5050:5050"
     volumes:
-      - ./uploads:/app/uploads
+      - ./:/app
+
     environment:
       - UPLOAD_FOLDER=/app/uploads
+  database:
+   image: postgres
+   restart: always
+   ports:
+    - "5432:5432"
+   environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+    - POSTGRES_DB=postgres
