@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, LargeBinary
 import datetime
 
 from .base import Base
@@ -13,6 +13,7 @@ class Files(Base):
         name (Column): A column storing the name of the file. It is indexed to improve query performance.
         creation_date (Column): A column storing the date and time when the file was created. It defaults to the current date and time when the record is inserted.
         created_by (Column): A column storing the IP address of the user who created the file. It defaults to '127.0.0.1'.
+        data (Column): A column storing the binary content of the file. It is required and cannot be null
 
     Usage:
         This class is used to interact with the 'files' table in the database.
@@ -22,3 +23,4 @@ class Files(Base):
     name = Column(String, index=True, nullable=False)
     creation_date = Column(DateTime, index=True, default=datetime.datetime.now(), nullable=False)
     created_by = Column(String, default="127.0.0.1")
+    data = Column(LargeBinary, nullable=False)

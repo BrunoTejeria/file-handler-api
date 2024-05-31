@@ -10,24 +10,30 @@ class Upload:
     @staticmethod
     async def upload(request: Request, file: UploadFile = FileType(...)) -> Union[Responses.json, Responses.error]:
         """
-        Asynchronously uploads a .txt file and saves its content to the database and filesystem.
+        Asynchronously uploads a .txt file, validates it, and saves its content to the database and filesystem.
 
-        Validates the file extension to ensure it is a .txt file and checks that the file is not empty.
-        The file's metadata and content are stored in the database, and the file itself is saved in the
-        './uploads' directory.
+        This method performs several key operations:
+        - Validates that the uploaded file has a .txt extension.
+        - Reads the content of the file and decodes it from binary to a string.
+        - Checks if the file is empty.
+        - Saves the file's metadata and content to the database.
+        - Returns a JSON response indicating the outcome of the operation.
 
         Parameters:
-        - request (Request): The request object.
-        - file (UploadFile, optional): The file to be uploaded. Defaults to FileType(...) which requires a file.
+        - request (Request): The request object, used to access request-specific data like the client's host.
+        - file (UploadFile, optional): The file to be uploaded. Defaults to FileType(...), which requires a file to be provided.
 
         Returns:
-        - A JSON response indicating the outcome of the upload operation. If the file is not a .txt file,
-          or if it is empty, an error response is returned. Otherwise, a success message is returned along
-          with the content of the uploaded file.
+        - Union[Responses.json, Responses.error]: A JSON response indicating the success or failure of the upload operation.
+          If the file is not a .txt file or is empty, an error response is returned. Otherwise, a success message and the
+          content of the uploaded file are returned.
+
+        Raises:
+        - HTTPException: If the file extension is not .txt or the file is empty, an HTTPException with status code 400 is raised.
 
         Note:
-        - This method assumes that the file has a '.txt' extension and validates it accordingly.
         - The file's binary content is decoded to a string before being stored and returned in the response.
+        - The method assumes that the file has a '.txt' extension and validates it accordingly.
         """
         # Validate the file extension
         if Validators.file.txt(file.filename):
@@ -44,15 +50,11 @@ class Upload:
         if len(contents["str"]) < 1:
             return Responses.error(err=True, status=400, message="El archivo está vacío")
 
-        # Save the file's metadata to the database
-        db = Session()
-        db.add(FilesModel(name=file.filename, created_by=request.client.host))
-        db.commit()
-        db.close()
-
-        # Save the file to the filesystem
-        with open(f"./uploads/{file.filename}", "wb") as f:
-            f.write(contents["bin"])
+        # Save the file's metadata and content to the database
+        with Session() as db:
+            db.add(FilesModel(name=file.filename, created_by=request.client.host, data=contents["bin"]))
+            db.commit()
+            db.close()
 
         # Return a success response with the file's content
-        return Responses.json(status=200, data=contents["str"], message="Archivo subido con éxito")
+        return Responses.json(status=200, data=contents["str"][0:1024]+"...", message="Archivo subido con éxito")
