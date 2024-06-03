@@ -20,8 +20,7 @@ class LogRequestsMiddleware(BaseHTTPMiddleware):
         None
 
     Methods:
-        async dispatch(request: Request, call_next): Processes the incoming request, logs details to the database,
-                                                     and prints the processing time to the console.
+        async dispatch(request: Request, call_next): Processes the incoming request, logs details to the database, and prints the processing time to the console.
     """
 
     async def dispatch(self, request: Request, call_next):
