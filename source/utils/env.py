@@ -4,7 +4,9 @@ import os
 dotenv.load_dotenv()
 
 __env__ = {
-    "FILES_FOLDER": os.getenv("FILES_FOLDER"),
+    "files": {
+        "max_size": int(eval(os.getenv('MAX_FILE_SIZE'))),
+    },
     "database": {
         "username":os.getenv('POSTGRES_USER'),
         "password":os.getenv('POSTGRES_PASSWORD'),

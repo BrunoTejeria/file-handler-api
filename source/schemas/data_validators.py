@@ -57,3 +57,17 @@ class Validators:
             bool: True if the string does not end with '.txt', False otherwise.
             """
             return string.endswith(".txt") is not True
+
+        @staticmethod
+        def size(size: bytes, file: bytes) -> bool:
+            """
+            Checks if the size of a given file does not exceed a specified limit.
+
+            Parameters:
+            - size (bytes): The maximum allowed size of the file.
+            - file (bytes): The file content to check the size of.
+
+            Returns:
+            - bool: False if the file size is less the specified size, True otherwise.
+            """
+            return len(file) >= size

@@ -5,6 +5,7 @@ from ..utils.responses import Responses
 from ..libs.database import Session
 from ..models.files import Files as FilesModel
 from ..schemas.data_validators import Validators
+from ..utils.env import __env__
 
 class Upload:
     @staticmethod
@@ -49,6 +50,10 @@ class Upload:
         # Check if the file is empty
         if len(contents["str"]) < 1:
             return Responses.error(err=True, status=400, message="El archivo está vacío")
+
+        # Check if the file size is within the allowed limit
+        if Validators.file.size(__env__["files"]["max_size"], contents["bin"]):
+            return Responses.error(err=True, status=400, message="El archivo es demasiado grande. Tamaño máximo: 64 MB")
 
         # Save the file's metadata and content to the database
         with Session() as db:
