@@ -59,3 +59,24 @@ class Download:
                 return Responses.json(status=200, data=b64encode(query.data).decode('ascii'), message="Archivo leído exitosamente")
             else:
                 return Responses.error(err=True, status=404, message="Archivo no encontrado")
+    
+    @staticmethod
+    def get_files_list() -> Union[Responses.json, Responses.error]:
+        """
+        Retrieves a list of all file names stored in the uploads database and returns them in a JSON response.
+
+        This method queries the database for all entries in the FilesModel, specifically fetching the names of the files.
+        It then formats these names into a list and returns them as part of a successful JSON response. If no files are found,
+        it returns an error response indicating that no files were found.
+
+        Returns:
+        - Responses.json: If files are found, returns a JSON response with a status code of 200 and a list of file names.
+        - Responses.error: If no files are found, returns a JSON error response with a status code of 404.
+        """
+        with Session() as db:
+            query = db.query(FilesModel.name).all()
+            db.close()
+            if query:
+                return Responses.json(status=200, data=[name for name, in query], message="Nombre de archivos encontrados con éxito.")
+            else:
+                return Responses.error(err=True, status=404, message="Archivos no encontrados")
