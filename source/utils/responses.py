@@ -59,3 +59,20 @@ class Responses:
         if err:
             return JSONResponse(status_code=status, content=jsonable_encoder({"error": err, "message": message}))
         return FileResponse(content=file, status_code=200)
+
+    @staticmethod
+    def error(err: bool | None = None, status: int = 200, message: str | None = None) -> JSONResponse:
+        """
+        Returns a JSON response indicating an error.
+
+        This method is used to generate a standardized error response across the application.
+
+        Parameters:
+        - err (bool | None): Indicates if there is an error. Default is None, which can be interpreted as false.
+        - status (int): The HTTP status code to be returned. Default is 200.
+        - message (str | None): A descriptive message about the error. Default is None.
+
+        Returns:
+        - JSONResponse: A JSON response with the specified status code, error flag, and message.
+        """
+        return JSONResponse(status_code=status, content=jsonable_encoder({"error": err, "message": message}))
