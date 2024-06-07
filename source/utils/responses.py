@@ -1,5 +1,6 @@
 from fastapi.responses import FileResponse, JSONResponse, HTMLResponse
 from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import HTTPException
 
 class Responses:
     """
@@ -75,4 +76,4 @@ class Responses:
         Returns:
         - JSONResponse: A JSON response with the specified status code, error flag, and message.
         """
-        return JSONResponse(status_code=status, content=jsonable_encoder({"error": err, "message": message}))
+        raise HTTPException(status_code=status, detail=jsonable_encoder({"error": err, "message": message}))
