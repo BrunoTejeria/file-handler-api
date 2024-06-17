@@ -12,6 +12,9 @@ __env__ = {
         "password":os.getenv('POSTGRES_PASSWORD'),
         "host":os.getenv('POSTGRES_HOST'),
         "database":os.getenv('POSTGRES_DB')
+    },
+    "auth": {
+        "api_key": os.getenv("KEY")
     }
 }
 
