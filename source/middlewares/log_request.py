@@ -16,9 +16,6 @@ class LogRequestsMiddleware(BaseHTTPMiddleware):
     It records the request path, method, processing time, client host, and user agent to a database.
     Additionally, it prints a log message to the console indicating the completion time of each request.
 
-    Attributes:
-        None
-
     Methods:
         async dispatch(request: Request, call_next): Processes the incoming request, logs details to the database, and prints the processing time to the console.
     """
