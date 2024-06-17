@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 
 from .routers.download import router as DownloadRouter
 from .routers.upload import router as UploadRouter
@@ -6,9 +6,10 @@ from .routers.delete import router as DeleteRouter
 from .routers.others import router as OthersRouter
 
 from .middlewares.log_request import LogRequestsMiddleware
+from .middlewares.HTTPAuth import HTTPAuth
 
 # FastAPI application instance
-app = FastAPI()
+app = FastAPI(dependencies=[Depends(HTTPAuth())])
 
 # Add middleware to log incoming requests
 app.add_middleware(LogRequestsMiddleware)
