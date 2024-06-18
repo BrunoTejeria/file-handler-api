@@ -9,7 +9,7 @@ from ..utils.env import __env__
 
 class Upload:
     @staticmethod
-    async def upload(request: Request, file: UploadFile = FileType(...)) -> Union[Responses.json, Responses.error]:
+    async def upload(request: Request, name: str, description: str = "", tags: list = [], file: UploadFile = FileType(...)) -> Union[Responses.json, Responses.error]:
         """
         Asynchronously uploads a .txt file, validates it, and saves its content to the database and filesystem.
 
@@ -22,6 +22,9 @@ class Upload:
 
         Parameters:
         - request (Request): The request object, used to access request-specific data like the client's host.
+        - name (str): The file's name.
+        - description (str): The file's description.
+        - tags (list, optional): The file's tags. Defaults to an empty list.
         - file (UploadFile, optional): The file to be uploaded. Defaults to FileType(...), which requires a file to be provided.
 
         Returns:
